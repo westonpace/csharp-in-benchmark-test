@@ -10,7 +10,7 @@ namespace csharp
         public struct FairlyLargeStruct
         {
             private readonly long l1, l2, l3, l4;
-            public int N { get; }
+            public int N { get; set; }
             public FairlyLargeStruct(int n) : this() => N = n;
         }
 
@@ -54,7 +54,7 @@ namespace csharp
         public int AggregatePassedByIn()
         {
             var x = new FairlyLargeStruct(42);
-            var y = DoAggregate(new FairlyLargeStruct(42));
+            var y = DoAggregate(x);
             return x.N * y;
 
             int DoAggregate(in FairlyLargeStruct largeStruct)
