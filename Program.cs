@@ -20,7 +20,9 @@ namespace csharp
         [Benchmark]
         public int AggregatePassedByValue()
         {
-            return DoAggregate(new FairlyLargeStruct(42));
+            var x = new FairlyLargeStruct(42);
+            var y = DoAggregate(x);
+            return x.N * y;
 
             int DoAggregate(FairlyLargeStruct largeStruct)
             {
@@ -32,9 +34,28 @@ namespace csharp
         }
 
         [Benchmark]
+        public int AggregatePassedByRef()
+        {
+            var x = new FairlyLargeStruct(42);
+            var y = DoAggregate(ref x);
+            return x.N * y;
+
+            int DoAggregate(ref FairlyLargeStruct largeStruct)
+            {
+                int result = 0;
+                foreach (int n in _data)
+                    result += n + largeStruct.N;
+                return result;
+            }
+        }
+
+
+        [Benchmark]
         public int AggregatePassedByIn()
         {
-            return DoAggregate(new FairlyLargeStruct(42));
+            var x = new FairlyLargeStruct(42);
+            var y = DoAggregate(new FairlyLargeStruct(42));
+            return x.N * y;
 
             int DoAggregate(in FairlyLargeStruct largeStruct)
             {
